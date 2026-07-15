@@ -8,29 +8,14 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final defaultTextStyle = TextStyle(
-      fontFamily: 'IranYekan',
-      color: LightThemeColors.primaryTextColor,
-    );
     return MaterialApp(
       title: 'Vision Store',
-      theme: ThemeData(
-        textTheme: TextTheme(
-          bodyMedium: defaultTextStyle,
-          headlineSmall: defaultTextStyle.copyWith(fontWeight: FontWeight.w700),
-          labelSmall: defaultTextStyle
-              .copyWith(fontSize: 12, fontWeight: FontWeight.w700)
-              .apply(color: LightThemeColors.secondaryTextColor),
-        ),
-        colorScheme: ColorScheme.light(
-          primary: LightThemeColors.primaryColor,
-          secondary: LightThemeColors.secondaryColor,
-          onSecondary: Colors.white,
-        ),
-      ),
+      theme: AppTheme.darkTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode
+          .system, // will switch automatically later — swap to a Bloc-driven value once you wire up your theme cubit/bloc
       home: Directionality(
         textDirection: TextDirection.rtl,
         child: MyHomePage(title: 'فروشگاه'),
@@ -105,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
