@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vstore/data/repo/banner_repository.dart';
 import 'package:vstore/data/repo/product_repository.dart';
 import 'package:vstore/theme.dart';
 
@@ -13,6 +14,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     productRepository
         .getProducts(0)
+        .then((value) {
+          debugPrint(value.toString());
+        })
+        .catchError((e) {
+          debugPrint(e.toString());
+        });
+
+    bannerRepository
+        .getBanners()
         .then((value) {
           debugPrint(value.toString());
         })

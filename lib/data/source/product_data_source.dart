@@ -1,4 +1,4 @@
-import 'package:vstore/common/exception.dart';
+import 'package:vstore/data/common/http_response_validator.dart';
 import 'package:vstore/data/product.dart';
 import 'package:dio/dio.dart';
 
@@ -7,7 +7,9 @@ abstract class IproductDataSource {
   Future<List<ProductEntity>> search(String searchTerm);
 }
 
-class ProductRemoteDataSource implements IproductDataSource {
+class ProductRemoteDataSource
+    with HttpResponseValidator
+    implements IproductDataSource {
   final Dio httpClient;
   ProductRemoteDataSource(this.httpClient);
 
@@ -33,11 +35,5 @@ class ProductRemoteDataSource implements IproductDataSource {
       products.add(ProductEntity.fromJson(element));
     });
     return products;
-  }
-
-  validateResponse(Response response) {
-    if (response.statusCode != 200) {
-      throw AppException();
-    }
   }
 }
