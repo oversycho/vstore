@@ -17,8 +17,9 @@ class BannerRemoteDataSource
     final response = await httpClient.get('banners');
     validateResponse(response);
     final List<BannerEntity> banners = [];
-    (response.data as List).forEach((JsonObject) {
-      banners.add(BannerEntity.fromJson(JsonObject));
+    // ignore: avoid_function_literals_in_foreach_calls
+    (response.data as List).forEach((jsonObject) {
+      banners.add(BannerEntity.fromJson(jsonObject));
     });
     return banners;
   }

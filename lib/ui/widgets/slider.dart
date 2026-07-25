@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:vstore/data/banner.dart';
 import 'package:vstore/ui/widgets/image.dart';
 
 class BannerSlider extends StatelessWidget {
-  final PageController _Controller = PageController();
+  final PageController _controller = PageController();
   final List<BannerEntity> banners;
   BannerSlider({super.key, required this.banners});
 
@@ -16,7 +15,7 @@ class BannerSlider extends StatelessWidget {
       child: Stack(
         children: [
           PageView.builder(
-            controller: _Controller,
+            controller: _controller,
             itemCount: banners.length,
             itemBuilder: (context, index) => _Slide(banner: banners[index]),
           ),
@@ -27,7 +26,7 @@ class BannerSlider extends StatelessWidget {
             bottom: 8,
             child: Center(
               child: SmoothPageIndicator(
-                controller: _Controller,
+                controller: _controller,
                 count: banners.length,
                 axisDirection: Axis.horizontal,
                 effect: WormEffect(
