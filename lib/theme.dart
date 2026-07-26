@@ -63,6 +63,11 @@ class AppTheme {
   );
 
   static ThemeData darkTheme = ThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: DarkThemeColors.primaryColor,
+      foregroundColor: DarkThemeColors.primaryTextColor,
+      elevation: 0,
+    ),
     brightness: Brightness.dark,
     fontFamily: _fontFamily,
     scaffoldBackgroundColor: DarkThemeColors.backgroundColor,

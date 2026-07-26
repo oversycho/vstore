@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vstore/common/utils.dart';
 import 'package:vstore/data/product.dart';
-
 import 'package:vstore/data/repo/banner_repository.dart';
 import 'package:vstore/data/repo/product_repository.dart';
-import 'package:vstore/theme.dart';
 import 'package:vstore/ui/home/bloc/home_bloc.dart';
-import 'package:vstore/ui/widgets/image.dart';
-
+import 'package:vstore/ui/product/product.dart';
 import 'package:vstore/ui/widgets/slider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -32,6 +29,7 @@ class HomeScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is HomeSuccess) {
                 return ListView.builder(
+                  physics: defultScrollPhysics,
                   itemCount: 7,
 
                   itemBuilder: (context, index) {
@@ -130,71 +128,9 @@ class _HorizontalProductList extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8, right: 8),
             itemBuilder: (context, index) {
               final products = product[index];
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: SizedBox(
-                  width: 176,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            width: 176,
-                            height: 189,
-                            child: ImageLoadingService(
-                              imageUrl: products.imageUrl,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          Positioned(
-                            right: 8,
-                            top: 8,
-                            child: Container(
-                              width: 32,
-                              height: 32,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                CupertinoIcons.heart,
-                                size: 24,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          products.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Text(
-                          products.previousPrice.withPriceLabel,
-                          style: Theme.of(context).textTheme.titleSmall!
-                              .copyWith(
-                                color: DarkThemeColors.secondaryTextColor,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Text(products.price.withPriceLabel),
-                      ),
-                    ],
-                  ),
-                ),
+              return Productitem(
+                products: products,
+                borderRadius: BorderRadius.circular(15),
               );
             },
           ),
