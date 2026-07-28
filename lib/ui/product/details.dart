@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vstore/common/utils.dart';
 import 'package:vstore/data/product.dart';
 import 'package:vstore/theme.dart';
+import 'package:vstore/ui/product/comment/comment_list.dart';
 import 'package:vstore/ui/widgets/image.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -70,6 +71,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'بهترین محصولات خارجی در بازار های مد و استایل با واردات مستقیم از کشور مبدا فقط در  ویژن استور  با کمترین قیمت و با ضمانت کامل بازگشت وجه  با پشتیبانی 24 ساعته .  ',
+                        style: TextStyle(height: 1.5),
                       ),
                     ),
                     Padding(
@@ -88,12 +90,11 @@ class ProductDetailsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    Container(color: Colors.blueGrey, height: 1000),
                   ],
                 ),
               ),
             ),
+            CommentList(productId: product.id),
           ],
         ),
       ),

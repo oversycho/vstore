@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:vstore/common/utils.dart';
 import 'package:vstore/data/product.dart';
 import 'package:vstore/data/repo/banner_repository.dart';
 import 'package:vstore/data/repo/product_repository.dart';
 import 'package:vstore/ui/home/bloc/home_bloc.dart';
 import 'package:vstore/ui/product/product.dart';
+import 'package:vstore/ui/widgets/error.dart';
 import 'package:vstore/ui/widgets/slider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -66,18 +68,11 @@ class HomeScreen extends StatelessWidget {
               } else if (state is HomeLoading) {
                 return Center(child: CupertinoActivityIndicator());
               } else if (state is HomeError) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(state.exception.message),
-                    ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
-                      },
-                      child: Text('تلاش مجدد'),
-                    ),
-                  ],
+                return AppErrorrWidget(
+                  exception: state.exception,
+                  onPressed: () {
+                    BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
+                  },
                 );
               } else {
                 throw Exception(' State is not Supported');
