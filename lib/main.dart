@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vstore/data/repo/banner_repository.dart';
 import 'package:vstore/data/repo/product_repository.dart';
 import 'package:vstore/theme.dart';
+import 'package:vstore/ui/auth/auth.dart';
 import 'package:vstore/ui/home/home.dart';
 import 'package:vstore/ui/root.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           .system, // will switch automatically later — swap to a Bloc-driven value once you wire up your theme cubit/bloc
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: RootScreen(),
+        child: const AuthScreen(),
       ),
     );
   }
