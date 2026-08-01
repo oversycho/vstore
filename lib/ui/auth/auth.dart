@@ -74,7 +74,14 @@ class _AuthScreenState extends State<AuthScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  authRepository.login("oversycho41@gmail.com", "123456789");
+                  try {
+                    authRepository.register(
+                      "oversycho4d21@gmail.com",
+                      "123456789",
+                    );
+                  } catch (e) {
+                    debugPrint(e.toString());
+                  }
                 },
                 child: Text(
                   isLogin ? 'ورود' : 'ثبت نام',
