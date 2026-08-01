@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vstore/data/repo/auth_repository.dart';
 import 'package:vstore/theme.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -72,13 +73,15 @@ class _AuthScreenState extends State<AuthScreen> {
               _PasswordTextField(),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  authRepository.login("oversycho41@gmail.com", "123456789");
+                },
                 child: Text(
                   isLogin ? 'ورود' : 'ثبت نام',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 18),
               GestureDetector(
                 onTap: () {
                   setState(() {
