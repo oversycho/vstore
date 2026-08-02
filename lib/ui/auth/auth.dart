@@ -73,15 +73,9 @@ class _AuthScreenState extends State<AuthScreen> {
               _PasswordTextField(),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  try {
-                    authRepository.register(
-                      "oversycho4d21@gmail.com",
-                      "123456789",
-                    );
-                  } catch (e) {
-                    debugPrint(e.toString());
-                  }
+                onPressed: () async {
+                  //  await authRepository.login("test@gmail.com", "123456");
+                  authRepository.refreshToken();
                 },
                 child: Text(
                   isLogin ? 'ورود' : 'ثبت نام',

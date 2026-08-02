@@ -8,7 +8,7 @@ final authRepository = AuthRepository(AuthRemoteDataSource(authHttpClient));
 abstract class IAuthRepository {
   Future<void> login(String username, String password);
   Future<void> register(String username, String password);
-  Future<void> refreshToken(String username, String password);
+  Future<void> refreshToken();
 }
 
 class AuthRepository implements IAuthRepository {
@@ -22,14 +22,13 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<void> refreshToken(String username, String password) {
-    // TODO: implement refreshToken
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> register(String username, String password) async {
     final AuthInfo authInfo = await dataSource.register(username, password);
     debugPrint("Access Token is -------------->  ${authInfo.accessToken}");
+  }
+
+  @override
+  Future<void> refreshToken() async {
+    dataSource.refreshToken("4ikkrmzvh5ve");
   }
 }
