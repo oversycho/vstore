@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vstore/data/repo/auth_repository.dart';
 import 'package:vstore/data/repo/banner_repository.dart';
 import 'package:vstore/data/repo/product_repository.dart';
 import 'package:vstore/theme.dart';
@@ -7,6 +8,8 @@ import 'package:vstore/ui/home/home.dart';
 import 'package:vstore/ui/root.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  authRepository.loadAuthInfo();
   runApp(const MyApp());
 }
 

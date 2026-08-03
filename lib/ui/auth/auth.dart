@@ -12,6 +12,13 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(
+    text: "test@gmail.com",
+  );
+  final TextEditingController passwordController = TextEditingController(
+    text: "123456",
+  );
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -66,16 +73,19 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(label: Text('آدرس ایمیل')),
               ),
               const SizedBox(height: 16),
-              _PasswordTextField(),
+              _PasswordTextField(controller: passwordController),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
-                  //  await authRepository.login("test@gmail.com", "123456");
-                  authRepository.refreshToken();
+                  await authRepository.login(
+                    emailController.text,
+                    passwordController.text,
+                  );
                 },
                 child: Text(
                   isLogin ? 'ورود' : 'ثبت نام',
@@ -114,8 +124,8 @@ class _AuthScreenState extends State<AuthScreen> {
 }
 
 class _PasswordTextField extends StatefulWidget {
-  const _PasswordTextField({super.key});
-
+  const _PasswordTextField({super.key, required this.controller});
+  final TextEditingController controller;
   @override
   State<_PasswordTextField> createState() => _PasswordTextFieldState();
 }
@@ -125,6 +135,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscureText,
       decoration: InputDecoration(
