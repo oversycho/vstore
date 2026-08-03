@@ -10,6 +10,7 @@ abstract class IAuthRepository {
   Future<void> login(String username, String password);
   Future<void> register(String username, String password);
   Future<void> refreshToken();
+  Future<void> signOut();
 }
 
 class AuthRepository implements IAuthRepository {
@@ -35,8 +36,16 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<void> refreshToken() async {
-    final AuthInfo authInfo = await dataSource.refreshToken("4ikkrmzvh5ve");
-    _persistAuthTokens(authInfo);
+    if (AuthChangeNotifier.value != null) {
+      final AuthInfo authInfo = await dataSource.refreshToken(
+        AuthChangeNotifier.value!.refreshToken,
+      );
+
+      debugPrint(
+        '**************** New Token is --->   ${authInfo.refreshToken}  ****************',
+      );
+      _persistAuthTokens(authInfo);
+    }
   }
 
   Future<void> _persistAuthTokens(AuthInfo authInfo) async {
@@ -44,6 +53,7 @@ class AuthRepository implements IAuthRepository {
         await SharedPreferences.getInstance();
     sharedPreferences.setString("access_token", authInfo.accessToken);
     sharedPreferences.setString("refresh_token", authInfo.refreshToken);
+    loadAuthInfo();
   }
 
   Future<void> loadAuthInfo() async {
@@ -56,5 +66,13 @@ class AuthRepository implements IAuthRepository {
     if (accessToken.isNotEmpty && refreshToken.isNotEmpty) {
       AuthChangeNotifier.value = AuthInfo(accessToken, refreshToken);
     }
+  }
+
+  @override
+  Future<void> signOut() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    AuthChangeNotifier.value = null;
   }
 }

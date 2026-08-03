@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           .system, // will switch automatically later — swap to a Bloc-driven value once you wire up your theme cubit/bloc
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: const AuthScreen(),
+        child: const RootScreen(),
       ),
     );
   }
