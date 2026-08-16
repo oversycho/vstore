@@ -1,17 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vstore/common/http_client.dart';
 import 'package:vstore/data/cart_item.dart';
+import 'package:vstore/data/add_to_cart_response.dart';
 import 'package:vstore/data/cart_response.dart';
 import 'package:vstore/data/repo/cart_repository.dart'; // <-- new import, adjust path
 
 final cartReposiorty = CartRepository(CartRemoteDataSource(httpClient));
 
 abstract class ICartDataSource {
-  Future<CartResponse> addToCart(int productId);
-  Future<CartResponse> changeCount(int cartItemId, int count);
+  Future<AddToCartResponse> addToCart(int productId);
+  Future<AddToCartResponse> changeCount(int cartItemId, int count);
   Future<void> delete(int cartItemId);
   Future<int> count();
-  Future<List<CartItemEntity>> getcart();
+  Future<CartResponse> getcart();
 }
 
 class CartRemoteDataSource implements ICartDataSource {
@@ -19,7 +21,7 @@ class CartRemoteDataSource implements ICartDataSource {
 
   CartRemoteDataSource(this.httpClient);
   @override
-  Future<CartResponse> addToCart(int productId) async {
+  Future<AddToCartResponse> addToCart(int productId) async {
     final response = await httpClient.post(
       'cart',
       data: {"product_id": productId, "count": 1},
@@ -32,11 +34,11 @@ class CartRemoteDataSource implements ICartDataSource {
     );
 
     final data = (response.data as List).first as Map<String, dynamic>;
-    return CartResponse.fromJson(data);
+    return AddToCartResponse.fromJson(data);
   }
 
   @override
-  Future<CartResponse> changeCount(int cartItemId, int count) {
+  Future<AddToCartResponse> changeCount(int cartItemId, int count) {
     // TODO: implement changeCount
     throw UnimplementedError();
   }
@@ -54,31 +56,9 @@ class CartRemoteDataSource implements ICartDataSource {
   }
 
   @override
-  Future<List<CartItemEntity>> getcart() {
-    // TODO: implement getcart
-    throw UnimplementedError();
+  Future<CartResponse> getcart() async {
+    final response = await httpClient.post('rpc/get_cart');
+    debugPrint('RAW CART RESPONSE: ${response.data}'); // <-- this line
+    return CartResponse.fromJson(response.data);
   }
-}
-
-class CartRepository implements ICartRepository {
-  final ICartDataSource dataSource;
-
-  CartRepository(this.dataSource);
-
-  @override
-  Future<CartResponse> addToCart(int productId) =>
-      dataSource.addToCart(productId);
-
-  @override
-  Future<CartResponse> changeCount(int cartItemId, int count) =>
-      dataSource.changeCount(cartItemId, count);
-
-  @override
-  Future<int> count() => dataSource.count();
-
-  @override
-  Future<void> delete(int cartItemId) => dataSource.delete(cartItemId);
-
-  @override
-  Future<List<CartItemEntity>> getcart() => dataSource.getcart();
 }
