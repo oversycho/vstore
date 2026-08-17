@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vstore/common/exception.dart';
+import 'package:vstore/data/auth_info.dart';
 import 'package:vstore/data/cart_response.dart';
 import 'package:vstore/data/repo/cart_repository.dart';
 
@@ -12,12 +13,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc(this.cartRepository) : super(CartLoading()) {
     on<CartEvent>((event, emit) async {
       if (event is CartStarted) {
-        try {
-          emit(CartLoading());
-          final result = await cartRepository.getcart();
-          emit(CartSuccess(result));
-        } catch (e) {
-          emit(CartErorr(AppException()));
+        final authInfo = event.authInfo;
+        if (authInfo == null || authInfo.accessToken.isEmpty) {
+          emit(CartAuthRequired());
+        } else {
+          try {
+            emit(CartLoading());
+            final result = await cartRepository.getcart();
+            emit(CartSuccess(result));
+          } catch (e) {
+            emit(CartErorr(AppException()));
+          }
         }
       }
     });

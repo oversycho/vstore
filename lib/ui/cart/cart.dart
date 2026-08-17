@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
       body: BlocProvider<CartBloc>(
         create: (context) {
           final bloc = CartBloc(cartReposiorty);
-          bloc.add(CartStarted());
+          bloc.add(CartStarted(AuthRepository.AuthChangeNotifier.value));
           return bloc;
         },
         child: BlocBuilder<CartBloc, CartState>(
@@ -145,13 +145,33 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 itemCount: state.cartResponse.cartItems.length,
               );
+            } else if (state is CartAuthRequired) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('وارد حساب کاربری خود شوید'),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => AuthScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text('ورود به حساب کاربری'),
+                    ),
+                  ],
+                ),
+              );
             } else {
               throw Exception('state is not supported');
             }
           },
         ),
-      ),
-      /* ValueListenableBuilder<AuthInfo?>(
+      ) /* ValueListenableBuilder<AuthInfo?>(
         valueListenable: AuthRepository.AuthChangeNotifier,
         builder: (context, authState, child) {
           bool isAuthenticated =
@@ -194,7 +214,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           );
         },
-      ), */
+      ), */,
     );
   }
 }
