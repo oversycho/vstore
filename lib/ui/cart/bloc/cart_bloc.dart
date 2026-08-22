@@ -17,15 +17,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         if (authInfo == null || authInfo.accessToken.isEmpty) {
           emit(CartAuthRequired());
         } else {
-          try {
-            emit(CartLoading());
-            final result = await cartRepository.getcart();
-            emit(CartSuccess(result));
-          } catch (e) {
-            emit(CartErorr(AppException()));
+          await LoadCartItems(emit);
+        }
+      } else if (event is CartAuthInfoChanged) {
+        if (event.authInfo == null || event.authInfo!.accessToken.isEmpty) {
+          emit(CartAuthRequired());
+        } else {
+          if (state is CartAuthRequired) {
+            await LoadCartItems(emit);
           }
         }
       }
     });
+  }
+  Future<void> LoadCartItems(Emitter<CartState> emit) async {
+    try {
+      emit(CartLoading());
+      final result = await cartRepository.getcart();
+      emit(CartSuccess(result));
+    } catch (e) {
+      emit(CartErorr(AppException()));
+    }
   }
 }

@@ -19,9 +19,24 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  CartBloc? cartBloc;
   @override
   void initState() {
     super.initState();
+    AuthRepository.AuthChangeNotifier.addListener(authChangeNotifierListener);
+  }
+
+  void authChangeNotifierListener() {
+    cartBloc?.add(CartAuthInfoChanged(AuthRepository.AuthChangeNotifier.value));
+  }
+
+  @override
+  void dispose() {
+    AuthRepository.AuthChangeNotifier.removeListener(
+      authChangeNotifierListener,
+    );
+    cartBloc?.close();
+    super.dispose();
   }
 
   @override
@@ -31,6 +46,7 @@ class _CartScreenState extends State<CartScreen> {
       body: BlocProvider<CartBloc>(
         create: (context) {
           final bloc = CartBloc(cartReposiorty);
+          cartBloc = bloc;
           bloc.add(CartStarted(AuthRepository.AuthChangeNotifier.value));
           return bloc;
         },

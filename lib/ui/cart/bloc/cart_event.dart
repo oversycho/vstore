@@ -12,3 +12,9 @@ class CartStarted extends CartEvent {
 
   const CartStarted(this.authInfo);
 }
+
+class CartAuthInfoChanged extends CartEvent {
+  final AuthInfo? authInfo;
+
+  const CartAuthInfoChanged(this.authInfo);
+}
